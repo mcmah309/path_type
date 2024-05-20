@@ -3,7 +3,7 @@
 import 'package:rust_core/option.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
-import 'package:path_type/posix_path.dart';
+import 'package:path_type/posix.dart';
 
 void main() {
   test("filePrefix", () {

@@ -1,7 +1,7 @@
 import 'package:rust_core/option.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
-import 'package:path_type/windows_path.dart';
+import 'package:path_type/windows.dart';
 
 void main() {
   test("filePrefix", () {
