@@ -1,6 +1,6 @@
 name: path_type
-description: A path type
-version: 0.1.0
+description: A zero cost path type
+version: 0.2.0
 repository: https://github.com/mcmah309/path_type
 
 environment:
