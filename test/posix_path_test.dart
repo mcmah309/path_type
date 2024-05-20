@@ -16,6 +16,12 @@ void main() {
     expect(Path("temp/foo.tar.gz").filePrefix().unwrap(), "foo");
     expect(Path("/foo/.tmp.bar.tar").filePrefix().unwrap(), "tmp");
     expect(Path("").filePrefix().isNone(), true);
+
+    expect(
+        Path("/Downloads/The Annual Report on the Health of the Parish of St. Mary Abbotts, Kensington, during the year 1874")
+            .filePrefix()
+            .unwrap(),
+        "The Annual Report on the Health of the Parish of St");
   });
 
   test("fileStem", () {
@@ -27,6 +33,12 @@ void main() {
     expect(Path("foo.tar.gz").fileStem().unwrap(), "foo.tar");
     expect(Path("temp/foo.tar.gz").fileStem().unwrap(), "foo.tar");
     expect(Path("").fileStem().isNone(), true);
+
+    expect(
+        Path("/Downloads/The Annual Report on the Health of the Parish of St. Mary Abbotts, Kensington, during the year 1874")
+            .fileStem()
+            .unwrap(),
+        "The Annual Report on the Health of the Parish of St");
   });
 
   test("parent", () {
@@ -38,11 +50,15 @@ void main() {
     expect(Path("foo").parent().unwrap(), Path(""));
     expect(Path("foo.tar.gz").parent().unwrap(), Path(""));
     expect(Path("temp/foo.tar.gz").parent().unwrap(), Path("temp"));
-    expect(
-        Path("temp1/temp2/foo.tar.gz").parent().unwrap(), Path("temp1/temp2"));
-    expect(
-        Path("temp1/temp2//foo.tar.gz").parent().unwrap(), Path("temp1/temp2"));
+    expect(Path("temp1/temp2/foo.tar.gz").parent().unwrap(), Path("temp1/temp2"));
+    expect(Path("temp1/temp2//foo.tar.gz").parent().unwrap(), Path("temp1/temp2"));
     expect(Path("").parent().isNone(), true);
+
+    expect(
+        Path("/Downloads/The Annual Report on the Health of the Parish of St. Mary Abbotts, Kensington, during the year 1874")
+            .parent()
+            .unwrap(),
+        Path("/Downloads"));
   });
 
   test("ancestors", () {
@@ -80,6 +96,20 @@ void main() {
     expect(ancestors.current, Path("foo/.."));
     ancestors.moveNext();
     expect(ancestors.current, Path("foo"));
+
+    ancestors = Path(
+            "/Downloads/The Annual Report on the Health of the Parish of St. Mary Abbotts, Kensington, during the year 1874")
+        .ancestors()
+        .iterator;
+    ancestors.moveNext();
+    expect(
+        ancestors.current,
+        Path(
+            "/Downloads/The Annual Report on the Health of the Parish of St. Mary Abbotts, Kensington, during the year 1874"));
+    ancestors.moveNext();
+    expect(ancestors.current, Path("/Downloads"));
+    ancestors.moveNext();
+    expect(ancestors.current, Path("/"));
   });
 
   test("withExtension", () {
@@ -88,11 +118,14 @@ void main() {
     expect(Path("foo.tar.gz").withExtension("rs"), Path("foo.tar.rs"));
     expect(Path("foo.tar.gz").withExtension(""), Path("foo.tar"));
     expect(Path("foo.tar.gz").withExtension("tar.gz"), Path("foo.tar.tar.gz"));
-    expect(Path("/tmp/foo.tar.gz").withExtension("tar.gz"),
-        Path("/tmp/foo.tar.tar.gz"));
+    expect(Path("/tmp/foo.tar.gz").withExtension("tar.gz"), Path("/tmp/foo.tar.tar.gz"));
     expect(Path("tmp/foo").withExtension("tar.gz"), Path("tmp/foo.tar.gz"));
+    expect(Path("tmp/.foo.tar").withExtension("tar.gz"), Path("tmp/.foo.tar.gz"));
+
     expect(
-        Path("tmp/.foo.tar").withExtension("tar.gz"), Path("tmp/.foo.tar.gz"));
+        Path("/Downloads/The Annual Report on the Health of the Parish of St. Mary Abbotts, Kensington, during the year 1874")
+            .withExtension(""),
+        Path("/Downloads/The Annual Report on the Health of the Parish of St"));
   });
 
   test("withFileName", () {
@@ -102,6 +135,11 @@ void main() {
     expect(Path("/tmp/foo.tar.gz").withFileName("bar"), Path("/tmp/bar"));
     expect(Path("tmp/foo").withFileName("bar"), Path("tmp/bar"));
     expect(Path("/var").withFileName("bar"), Path("/bar"));
+
+    expect(
+        Path("/Downloads/The Annual Report on the Health of the Parish of St. Mary Abbotts, Kensington, during the year 1874")
+            .withFileName("dave"),
+        Path("/Downloads/dave"));
   });
 
   //************************************************************************//

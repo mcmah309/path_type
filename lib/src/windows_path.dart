@@ -19,7 +19,7 @@ extension type Path._(String path) implements Object {
   static final RegExp oneOrmoreSlashes = RegExp(r'\\+');
   static final p.Context windows = p.Context(style: p.Style.windows);
 
-  Path(this.path) : assert(_validate(path), "Path must be windows style");
+  Path(this.path);
 
   Iterable<Path> ancestors() sync* {
     yield this;
@@ -255,7 +255,7 @@ extension type Path._(String path) implements Object {
 // to_string_lossy: Will not be implemented
 // try_exists: Will not implement
 
-  /// Creates an PathBuf like this but with the given extension.
+  /// Creates an Path like this but with the given extension.
   Path withExtension(String extension) {
     final stem = fileStem().unwrapOr("");
     final parentOption = parent();
@@ -313,28 +313,6 @@ Path _joinComponents(Iterable<Component> components) {
 }
 
 //************************************************************************//
-
-// This is likely not complete, but a minimal validation
-bool _validate(String path) {
-  // "/" is also reserved on windows
-  final hasInvalidPathSep = path.contains("/");
-  if (hasInvalidPathSep) {
-    return false;
-  }
-  final hasADoubleDotWithoutSlashes = RegExp(r'[^\\]\.\.[^\\]');
-  if (hasADoubleDotWithoutSlashes.hasMatch(path)) {
-    return false;
-  }
-  final anInvalidComponentHasBeenIdentified = !path
-      .split(_pathSeparator)
-      .skip(1)
-      .where((e) => e.isNotEmpty)
-      .every((e) => Path.regularPathComponent.hasMatch(e));
-  if (anInvalidComponentHasBeenIdentified) {
-    return false;
-  }
-  return true;
-}
 
 sealed class Component {
   const Component();

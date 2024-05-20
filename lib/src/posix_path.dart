@@ -19,7 +19,7 @@ extension type Path._(String path) implements Object {
   static final RegExp oneOrmoreSlashes = RegExp('$_pathSeparator+');
   static final p.Context posix = p.Context(style: p.Style.posix);
 
-  Path(this.path) : assert(_earlyValidation(path), "Path must be posix style");
+  Path(this.path);
 
   Iterable<Path> ancestors() sync* {
     yield this;
@@ -255,7 +255,7 @@ extension type Path._(String path) implements Object {
 // to_string_lossy: Will not be implemented
 // try_exists: Will not implement
 
-  /// Creates an PathBuf like this but with the given extension.
+  /// Creates an Path like this but with the given extension.
   Path withExtension(String extension) {
     final stem = fileStem().unwrapOr("");
     final parentOption = parent();
@@ -313,23 +313,6 @@ Path _joinComponents(Iterable<Component> components) {
 }
 
 //************************************************************************//
-
-// This is likely not complete, but a minimal validation
-bool _earlyValidation(String path) {
-  final hasADoubleDotWithoutSlashes = RegExp(r'[^/]\.\.[^/]');
-  if (hasADoubleDotWithoutSlashes.hasMatch(path)) {
-    return false;
-  }
-  final anInvalidComponentHasBeenIdentified = !path
-      .split(_pathSeparator)
-      .skip(1)
-      .where((e) => e.isNotEmpty)
-      .every((e) => Path.regularPathComponent.hasMatch(e));
-  if (anInvalidComponentHasBeenIdentified) {
-    return false;
-  }
-  return true;
-}
 
 sealed class Component {
   const Component();
