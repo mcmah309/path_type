@@ -13,7 +13,8 @@ typedef Metadata = io.FileStat;
 Metadata metadata(String path) => io.FileStat.statSync(path);
 
 bool exists(String path) =>
-    io.FileSystemEntity.typeSync(path, followLinks: true) != io.FileSystemEntityType.notFound;
+    io.FileSystemEntity.typeSync(path, followLinks: true) !=
+    io.FileSystemEntityType.notFound;
 
 bool isDir(String path) => io.FileSystemEntity.isDirectorySync(path);
 

@@ -99,7 +99,7 @@ extension type Path._(String path) implements Object {
   /// Extracts the extension (without the leading dot) of self.file_name, if possible.
   String extension() {
     String extensionWithDot = _posix.extension(path);
-    if(extensionWithDot.isNotEmpty){
+    if (extensionWithDot.isNotEmpty) {
       assert(extensionWithDot.startsWith("."));
       return extensionWithDot.replaceFirst(".", "");
     }
@@ -212,7 +212,8 @@ extension type Path._(String path) implements Object {
   Result<platform.ReadDir, IoError> readDir() => platform.readDir(path);
 
   /// Reads a symbolic link, returning the file that the link points to.
-  Result<Path, IoError> readLink() => platform.readLink(path) as Result<Path, IoError>;
+  Result<Path, IoError> readLink() =>
+      platform.readLink(path) as Result<Path, IoError>;
 
   /// Determines whether other is a prefix of this.
   bool startsWith(Path other) => path.startsWith(other.path);
@@ -228,7 +229,8 @@ extension type Path._(String path) implements Object {
 
   /// Returns the metadata for the symlink.
   /// Note: using this method means that the program can no longer compile for the web.
-  Result<platform.Metadata, IoError> symlinkMetadata() => platform.symlinkMetadata(path);
+  Result<platform.Metadata, IoError> symlinkMetadata() =>
+      platform.symlinkMetadata(path);
 
 // to_path_buf: Will not implement, implementing a PathBuf does not make sense at the present (equality cannot hold for extension types and a potential PathBuf would likely be `StringBuffer` or `List<String>`).
 // to_str: Implemented by type

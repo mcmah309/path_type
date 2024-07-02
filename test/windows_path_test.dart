@@ -128,7 +128,8 @@ void main() {
     expect(
         Path("\\Downloads\\The Annual Report on the Health of the Parish of St. Mary Abbotts, Kensington, during the year 1874")
             .withExtension(""),
-        Path("\\Downloads\\The Annual Report on the Health of the Parish of St"));
+        Path(
+            "\\Downloads\\The Annual Report on the Health of the Parish of St"));
   });
 
   test("withFileName", () {
