@@ -11,7 +11,7 @@
 - Component Extraction: Extract components like file name, extension, and parent directory.
 - File System Interaction: Query file system metadata, check existence, and more.
 - Cross-Platform Support: Separate implementations for POSIX and Windows paths, and runs on all platforms including web.
-- Zero Runtime Cost: Path is implemented an extension type of String.
+- Zero Runtime Cost: Path is implemented as an extension type of String.
 
 ## Usage
 import
