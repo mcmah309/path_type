@@ -2,22 +2,19 @@ import 'package:path/path.dart' as p;
 import 'package:rust_core/option.dart';
 import 'package:rust_core/iter.dart';
 import 'package:rust_core/result.dart';
-import 'package:universal_io/io.dart' as io;
 
+import 'platform/platform.dart' as platform;
 import 'io_error.dart';
 import 'utils.dart';
 
-/// An iterator over the entries within a directory.
-typedef ReadDir = List<io.FileSystemEntity>;
-typedef Metadata = io.FileStat;
 const _pathSeparator = "\\";
 
 /// This type supports a number of operations for inspecting a path, including breaking the path into its components,
 /// extracting the file name, determining whether the path is absolute, and so on.
 extension type Path._(String path) implements Object {
-  static final RegExp regularPathComponent = RegExp(r'^[ .\w-]+$');
-  static final RegExp oneOrmoreSlashes = RegExp(r'\\+');
-  static final p.Context windows = p.Context(style: p.Style.windows);
+  static final RegExp _regularPathComponent = RegExp(r'^[ .\w-]+$');
+  static final RegExp _oneOrMoreSlashes = RegExp(r'\\+');
+  static final p.Context _windows = p.Context(style: p.Style.windows);
 
   Path(this.path);
 
@@ -33,7 +30,7 @@ extension type Path._(String path) implements Object {
 // as_mut_os_str : will not be implemented
 // as_os_str : will not be implemented
 
-  Path canonicalize() => Path(windows.canonicalize(path));
+  Path canonicalize() => Path(_windows.canonicalize(path));
 
   Iterable<Component> components() sync* {
     bool removeLast;
@@ -47,7 +44,7 @@ extension type Path._(String path) implements Object {
     } else {
       removeLast = false;
     }
-    final splits = path.split(oneOrmoreSlashes);
+    final splits = path.split(_oneOrMoreSlashes);
     if (removeLast) {
       splits.removeLast();
     }
@@ -66,7 +63,7 @@ extension type Path._(String path) implements Object {
         yield ParentDir();
         break;
       default:
-        if (regularPathComponent.hasMatch(current)) {
+        if (_regularPathComponent.hasMatch(current)) {
           yield Normal(current);
         } else {
           yield Prefix(current);
@@ -94,15 +91,13 @@ extension type Path._(String path) implements Object {
   bool endsWith(Path other) => path.endsWith(other.path);
 
   /// Determines whether other is a suffix of this.
-  bool exists() =>
-      io.FileSystemEntity.typeSync(path, followLinks: true) !=
-      io.FileSystemEntityType.notFound;
+  bool exists() => platform.exists(path);
 
   /// Extracts the extension (without the leading dot) of self.file_name, if possible.
-  String extension() => windows.extension(path);
+  String extension() => _windows.extension(path);
 
   /// Returns the final component of the Path, if there is one.
-  String fileName() => windows.basename(path);
+  String fileName() => _windows.basename(path);
 
   /// Extracts the portion of the file name before the first "." -
   ///
@@ -112,7 +107,7 @@ extension type Path._(String path) implements Object {
   /// The entire file name if the file name begins with . and has no other .s within;
   /// The portion of the file name before the second . if the file name begins with .
   Option<String> filePrefix() {
-    final value = windows.basename(path);
+    final value = _windows.basename(path);
     if (value.isEmpty) {
       return None;
     }
@@ -138,7 +133,7 @@ extension type Path._(String path) implements Object {
   /// The entire file name if the file name begins with . and has no other .s within;
   /// Otherwise, the portion of the file name before the final .
   Option<String> fileStem() {
-    final fileStem = windows.basenameWithoutExtension(path);
+    final fileStem = _windows.basenameWithoutExtension(path);
     if (fileStem.isEmpty) {
       return None;
     }
@@ -146,34 +141,34 @@ extension type Path._(String path) implements Object {
   }
 
   /// Returns true if the Path has a root.
-  bool hasRoot() => windows.rootPrefix(path) == _pathSeparator;
+  bool hasRoot() => _windows.rootPrefix(path) == _pathSeparator;
 
   // into_path_buf : will not be implemented
 
   /// Returns true if the Path is absolute, i.e., if it is independent of the current directory.
-  bool isAbsolute() => windows.isAbsolute(path);
+  bool isAbsolute() => _windows.isAbsolute(path);
 
   /// Returns true if the path exists on disk and is pointing at a directory. Does not follow links.
-  bool isDir() => io.FileSystemEntity.isDirectorySync(path);
+  bool isDir() => platform.isDir(path);
 
   /// Returns true if the path exists on disk and is pointing at a regular file. Does not follow links.
-  bool isFile() => io.FileSystemEntity.isFileSync(path);
+  bool isFile() => platform.isFile(path);
 
   /// Returns true if the Path is relative, i.e., not absolute.
-  bool isRelative() => windows.isRelative(path);
+  bool isRelative() => _windows.isRelative(path);
 
   /// Returns true if the path exists on disk and is pointing at a symlink. Does not follow links.
-  bool isSymlink() => io.FileSystemEntity.isLinkSync(path);
+  bool isSymlink() => platform.isSymlink(path);
 
   /// Produces an iterator over the path’s components viewed as Strings
   RIterator<String> iter() =>
       RIterator.fromIterable(components().map((e) => e.toString()));
 
   /// Creates an Path with path adjoined to this.
-  Path join(Path other) => Path(windows.join(path, other.path));
+  Path join(Path other) => Path(_windows.join(path, other.path));
 
   /// Queries the file system to get information about a file, directory, etc.
-  Metadata metadata() => io.FileStat.statSync(path);
+  platform.Metadata metadata() => platform.metadata(path);
 
 // new : will not be implemented
 
@@ -202,30 +197,10 @@ extension type Path._(String path) implements Object {
   }
 
   /// Returns an iterator over the entries within a directory.
-  Result<ReadDir, IoError> readDir() {
-    if (!isDir()) {
-      return Err(IoErrorNotADirectory(path));
-    }
-    try {
-      final dir = io.Directory(path);
-      return Ok(dir.listSync());
-    } catch (e) {
-      return Err(IoErrorUnknown(path, e));
-    }
-  }
+  Result<platform.ReadDir, IoError> readDir() => platform.readDir(path);
 
   /// Reads a symbolic link, returning the file that the link points to.
-  Result<Path, IoError> readLink() {
-    if (!isSymlink()) {
-      return Err(IoErrorNotALink(path));
-    }
-    try {
-      final link = io.Link(path);
-      return Ok(Path(link.resolveSymbolicLinksSync()));
-    } catch (e) {
-      return Err(IoErrorUnknown(path, e));
-    }
-  }
+  Result<Path, IoError> readLink() => platform.readLink(path) as Result<Path, IoError>;
 
   /// Determines whether other is a prefix of this.
   bool startsWith(Path other) => path.startsWith(other.path);
@@ -239,16 +214,7 @@ extension type Path._(String path) implements Object {
     return Some(Path(newPath));
   }
 
-  Result<Metadata, IoError> symlinkMetadata() {
-    if (!isSymlink()) {
-      return Err(IoErrorNotALink(path));
-    }
-    try {
-      return Ok(io.Link(path).statSync());
-    } catch (e) {
-      return Err(IoErrorUnknown(path, e));
-    }
-  }
+  Result<platform.Metadata, IoError> symlinkMetadata() => platform.symlinkMetadata(path);
 
 // to_path_buf: Will not implement, implementing a PathBuf does not make sense at the present (equality cannot hold for extension types and a potential PathBuf would likely be `StringBuffer` or `List<String>`).
 // to_str: Implemented by type
