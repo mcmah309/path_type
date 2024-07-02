@@ -1,7 +1,7 @@
 # Path Type for Dart
 [![Pub Version](https://img.shields.io/pub/v/path_type.svg)](https://pub.dev/packages/path_type)
 [![Dart Package Docs](https://img.shields.io/badge/documentation-pub.dev-blue.svg)](https://pub.dev/documentation/path_type/latest/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-purple.svg)](https://opensource.org/licenses/MIT)
+[![License: Apache 2.0](https://img.shields.io/github/license/mcmah309/path_type)](https://opensource.org/license/apache-2-0)
 [![Build Status](https://github.com/mcmah309/path_type/actions/workflows/ci.yml/badge.svg)](https://github.com/mcmah309/path_type/actions)
 
 `path_type` is a Dart package that introduces a robust Path type inspired by Rust's Path type. This package provides a way to work with file paths in a structured and type-safe manner, supporting POSIX and Windows file systems.
