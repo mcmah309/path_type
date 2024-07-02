@@ -97,7 +97,14 @@ extension type Path._(String path) implements Object {
   bool exists() => platform.exists(path);
 
   /// Extracts the extension (without the leading dot) of self.file_name, if possible.
-  String extension() => _posix.extension(path);
+  String extension() {
+    String extensionWithDot = _posix.extension(path);
+    if(extensionWithDot.isNotEmpty){
+      assert(extensionWithDot.startsWith("."));
+      return extensionWithDot.replaceFirst(".", "");
+    }
+    return extensionWithDot;
+  }
 
   /// Returns the final component of the Path, if there is one.
   String fileName() => _posix.basename(path);

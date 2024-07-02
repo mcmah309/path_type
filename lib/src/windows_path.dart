@@ -97,7 +97,14 @@ extension type Path._(String path) implements Object {
   bool exists() => platform.exists(path);
 
   /// Extracts the extension (without the leading dot) of self.file_name, if possible.
-  String extension() => _windows.extension(path);
+  String extension() {
+    String extensionWithDot = _windows.extension(path);
+    if (extensionWithDot.isNotEmpty) {
+      assert(extensionWithDot.startsWith("."));
+      return extensionWithDot.replaceFirst(".", "");
+    }
+    return extensionWithDot;
+  }
 
   /// Returns the final component of the Path, if there is one.
   String fileName() => _windows.basename(path);
@@ -164,8 +171,7 @@ extension type Path._(String path) implements Object {
   bool isSymlink() => platform.isSymlink(path);
 
   /// Produces an iterator over the path’s components viewed as Strings
-  RIterator<String> iter() =>
-      RIterator.fromIterable(components().map((e) => e.toString()));
+  RIterator<String> iter() => RIterator.fromIterable(components().map((e) => e.toString()));
 
   /// Creates an Path with path adjoined to this.
   Path join(Path other) => Path(_windows.join(path, other.path));
@@ -296,8 +302,7 @@ class Prefix extends Component {
   const Prefix(this.value);
 
   @override
-  bool operator ==(Object other) =>
-      other == value || (other is Prefix && other.value == value);
+  bool operator ==(Object other) => other == value || (other is Prefix && other.value == value);
 
   @override
   int get hashCode => value.hashCode;
@@ -350,8 +355,7 @@ class Normal extends Component {
   Normal(this.value);
 
   @override
-  bool operator ==(Object other) =>
-      other == value || (other is Normal && other.value == value);
+  bool operator ==(Object other) => other == value || (other is Normal && other.value == value);
 
   @override
   int get hashCode => value.hashCode;

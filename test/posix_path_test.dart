@@ -142,6 +142,23 @@ void main() {
         Path("/Downloads/dave"));
   });
 
+  test("extension", () {
+    expect(Path("foo").extension(), "");
+    expect(Path("foo.rs").extension(), "rs");
+    expect(Path("foo.tar.gz").extension(), "gz");
+    expect(Path("/tmp/foo.tar.gz").extension(), "gz");
+    expect(Path("tmp/foo").extension(), "");
+    expect(Path(".foo").extension(), "");
+    expect(Path("/var").extension(), "");
+    expect(Path("/var..d").extension(), "d");
+    expect(Path("/..d").extension(), "d");
+
+    expect(
+        Path("/Downloads/The Annual Report on the Health of the Parish of St. Mary Abbotts, Kensington, during the year 1874")
+            .extension(),
+        " Mary Abbotts, Kensington, during the year 1874");
+  });
+
   //************************************************************************//
 
   test("Option Path", () {
