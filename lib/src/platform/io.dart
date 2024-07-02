@@ -2,23 +2,15 @@ import 'dart:io' as io;
 import 'package:rust_core/result.dart';
 
 import '../io_error.dart';
-import 'unsupported.dart' as unsupported;
+
+bool isIoSupported() => true;
 
 /// An iterator over the entries within a directory.
 typedef ReadDir = List<io.FileSystemEntity>;
 
-class Metadata implements unsupported.Metadata {
-  final io.FileStat stat;
+typedef Metadata = io.FileStat;
 
-  Metadata(this.stat);
-
-  @override
-  DateTime accessed() {
-    return stat.accessed;
-  }
-}
-
-Metadata metadata(String path) => Metadata(io.FileStat.statSync(path));
+Metadata metadata(String path) => io.FileStat.statSync(path);
 
 bool exists(String path) =>
     io.FileSystemEntity.typeSync(path, followLinks: true) != io.FileSystemEntityType.notFound;
@@ -58,7 +50,7 @@ Result<Metadata, IoError> symlinkMetadata(String path) {
     return Err(IoErrorNotALink(path));
   }
   try {
-    return Ok(Metadata(io.Link(path).statSync()));
+    return Ok(io.Link(path).statSync());
   } catch (e) {
     return Err(IoErrorUnknown(path, e));
   }

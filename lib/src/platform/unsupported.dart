@@ -2,15 +2,11 @@ import 'package:rust_core/result.dart';
 
 import '../io_error.dart';
 
-/// An iterator over the entries within a directory.
+bool isIoSupported() => false;
+
 class ReadDir {}
 
-class Metadata {
-  static final _error =
-      UnsupportedError("'Metadata' operations are not supported on this platform.");
-
-  DateTime accessed() => throw _error;
-}
+class Metadata {}
 
 Metadata metadata(String path) =>
     throw UnsupportedError("'metadata' is not supported on on this platform.");

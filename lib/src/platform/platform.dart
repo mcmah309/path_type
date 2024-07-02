@@ -1,1 +1,2 @@
-export 'unsupported.dart' if (dart.library.io) 'io.dart';
+export 'io.dart' if (dart.library.html) 'unsupported.dart';
+

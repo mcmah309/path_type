@@ -12,6 +12,9 @@ const _pathSeparator = "/";
 /// This type supports a number of operations for inspecting a path, including breaking the path into its components,
 /// extracting the file name, determining whether the path is absolute, and so on.
 extension type Path._(String path) implements Object {
+  /// Returns whether io operations are supported. If false, is currently running on the web.
+  static bool isIoSupported() => platform.isIoSupported();
+
   static final RegExp _regularPathComponent = RegExp(r'^[ \\.\w-]+$');
   static final RegExp _oneOrMoreSlashes = RegExp('$_pathSeparator+');
   static final p.Context _posix = p.Context(style: p.Style.posix);
@@ -168,6 +171,7 @@ extension type Path._(String path) implements Object {
   Path join(Path other) => Path(_posix.join(path, other.path));
 
   /// Queries the file system to get information about a file, directory, etc.
+  /// Note: using this method means that the program can no longer compile for the web.
   platform.Metadata metadata() => platform.metadata(path);
 
 // new : will not be implemented
@@ -197,6 +201,7 @@ extension type Path._(String path) implements Object {
   }
 
   /// Returns an iterator over the entries within a directory.
+  /// Note: using this method results in the program no longer being able to compile to web.
   Result<platform.ReadDir, IoError> readDir() => platform.readDir(path);
 
   /// Reads a symbolic link, returning the file that the link points to.
@@ -214,6 +219,8 @@ extension type Path._(String path) implements Object {
     return Some(Path(newPath));
   }
 
+  /// Returns the metadata for the symlink.
+  /// Note: using this method means that the program can no longer compile for the web.
   Result<platform.Metadata, IoError> symlinkMetadata() => platform.symlinkMetadata(path);
 
 // to_path_buf: Will not implement, implementing a PathBuf does not make sense at the present (equality cannot hold for extension types and a potential PathBuf would likely be `StringBuffer` or `List<String>`).
