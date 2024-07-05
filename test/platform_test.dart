@@ -1,17 +1,35 @@
 // ignore_for_file: pattern_never_matches_value_type, unused_local_variable
 
+import 'package:path_type/posix.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
-import 'package:path_type/posix.dart';
 
 void main() {
-  test("readLink", () {
+  test("readLinkSync", () {
     if (Path.isIoSupported()) {
-      expect(Path("test/fixtures/file_symlink").readLink().unwrap(),
-          endsWith("test/fixtures/file"));
+      expect(
+        Path("test/fixtures/file_symlink").readLinkSync().unwrap(),
+        endsWith("test/fixtures/file"),
+      );
     } else {
-      expect(() => Path("test/fixtures/file_symlink").readLink(),
-          throwsA(isA<UnsupportedError>()));
+      expect(
+        () => Path("test/fixtures/file_symlink").readLinkSync(),
+        throwsA(isA<UnsupportedError>()),
+      );
+    }
+  });
+
+  test("readLink", () async {
+    if (Path.isIoSupported()) {
+      expect(
+        (await Path("test/fixtures/file_symlink").readLink()).unwrap(),
+        endsWith("test/fixtures/file"),
+      );
+    } else {
+      expect(
+        () async => await Path("test/fixtures/file_symlink").readLink(),
+        throwsA(isA<UnsupportedError>()),
+      );
     }
   });
 
@@ -24,8 +42,10 @@ void main() {
       // int mode = metadata.mode;
       // FileSystemEntityType type = metadata.type;
     } else {
-      expect(() => Path("test/fixtures/file").metadata(),
-          throwsA(isA<UnsupportedError>()));
+      expect(
+        () => Path("test/fixtures/file").metadata(),
+        throwsA(isA<UnsupportedError>()),
+      );
     }
   });
 }
