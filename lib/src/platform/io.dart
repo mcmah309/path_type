@@ -43,6 +43,7 @@ Future<Result<ReadDir, IoError>> readDir(String path) async {
     return Err(IoErrorUnknown(path, e));
   }
 }
+
 Result<ReadDir, IoError> readDirSync(String path) {
   if (!isDirSync(path)) {
     return Err(IoErrorNotADirectory(path));
@@ -68,6 +69,7 @@ Future<Result<String, IoError>> readLink(String path) async {
     return Err(IoErrorUnknown(path, e));
   }
 }
+
 Result<String, IoError> readLinkSync(String path) {
   if (!isSymlinkSync(path)) {
     return Err(IoErrorNotALink(path));
@@ -90,6 +92,7 @@ Result<Metadata, IoError> symlinkMetadataSync(String path) {
     return Err(IoErrorUnknown(path, e));
   }
 }
+
 Future<Result<Metadata, IoError>> symlinkMetadata(String path) async {
   if (!await isSymlink(path)) {
     return Err(IoErrorNotALink(path));

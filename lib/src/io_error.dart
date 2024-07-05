@@ -10,7 +10,9 @@ sealed class IoError implements Exception {
 
   @override
   bool operator ==(Object other) {
-    return other.runtimeType == runtimeType && other is IoError && other.path == path;
+    return other.runtimeType == runtimeType &&
+        other is IoError &&
+        other.path == path;
   }
 
   @override
