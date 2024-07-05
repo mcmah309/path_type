@@ -1,3 +1,4 @@
+@pragma('vm:prefer-inline')
 void forEachExceptFirstAndLast<E>(Iterator<E> iterator,
     {required Function(E)? doFirst,
     required Function(E)? doRest,
