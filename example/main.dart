@@ -18,8 +18,8 @@ void main() {
 
   path = Path('/foo/bar/baz.txt');
 
-  if (path.exists()) {
-    var metadata = path.metadata();
+  if (path.existsSync()) {
+    var metadata = path.metadataSync();
     print('File size: ${metadata.size}');
     print('Last modified: ${metadata.modified}');
   } else {

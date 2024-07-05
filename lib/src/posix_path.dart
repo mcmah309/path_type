@@ -1,10 +1,10 @@
 import 'package:path/path.dart' as p;
-import 'package:rust_core/option.dart';
 import 'package:rust_core/iter.dart';
+import 'package:rust_core/option.dart';
 import 'package:rust_core/result.dart';
 
-import 'platform/platform.dart' as platform;
 import 'io_error.dart';
+import 'platform/platform.dart' as platform;
 import 'utils.dart';
 
 const _pathSeparator = "/";
@@ -93,8 +93,13 @@ extension type Path._(String path) implements Object {
   /// Determines whether other is a suffix of this.
   bool endsWith(Path other) => path.endsWith(other.path);
 
-  /// Determines whether other is a suffix of this.
-  bool exists() => platform.exists(path);
+  /// Determines whether file exists on disk.
+  /// Prefer faster [existsSync] over async [exists].
+  bool existsSync() => platform.existsSync(path);
+
+  /// Determines whether file exists on disk.
+  /// Prefer faster [existsSync] over async [exists].
+  Future<bool> exists() => platform.exists(path);
 
   /// Extracts the extension (without the leading dot) of self.file_name, if possible.
   String extension() {
@@ -159,16 +164,25 @@ extension type Path._(String path) implements Object {
   bool isAbsolute() => _posix.isAbsolute(path);
 
   /// Returns true if the path exists on disk and is pointing at a directory. Does not follow links.
-  bool isDir() => platform.isDir(path);
+  bool isDirSync() => platform.isDirSync(path);
+
+  /// Returns true if the path exists on disk and is pointing at a directory. Does not follow links.
+  Future<bool> isDir() => platform.isDir(path);
 
   /// Returns true if the path exists on disk and is pointing at a regular file. Does not follow links.
-  bool isFile() => platform.isFile(path);
+  bool isFileSync() => platform.isFileSync(path);
+
+  /// Returns true if the path exists on disk and is pointing at a regular file. Does not follow links.
+  Future<bool> isFile() => platform.isFile(path);
 
   /// Returns true if the Path is relative, i.e., not absolute.
   bool isRelative() => _posix.isRelative(path);
 
   /// Returns true if the path exists on disk and is pointing at a symlink. Does not follow links.
-  bool isSymlink() => platform.isSymlink(path);
+  bool isSymlinkSync() => platform.isSymlinkSync(path);
+
+  /// Returns true if the path exists on disk and is pointing at a symlink. Does not follow links.
+  Future<bool> isSymlink() => platform.isSymlink(path);
 
   /// Produces an iterator over the path’s components viewed as Strings
   RIterator<String> iter() =>
@@ -179,7 +193,11 @@ extension type Path._(String path) implements Object {
 
   /// Queries the file system to get information about a file, directory, etc.
   /// Note: using this method means that the program can no longer compile for the web.
-  platform.Metadata metadata() => platform.metadata(path);
+  platform.Metadata metadataSync() => platform.metadataSync(path);
+
+  /// Queries the file system to get information about a file, directory, etc.
+  /// Note: using this method means that the program can no longer compile for the web.
+  Future<platform.Metadata> metadata() => platform.metadata(path);
 
 // new : will not be implemented
 
@@ -209,11 +227,19 @@ extension type Path._(String path) implements Object {
 
   /// Returns an iterator over the entries within a directory.
   /// Note: using this method results in the program no longer being able to compile to web.
-  Result<platform.ReadDir, IoError> readDir() => platform.readDir(path);
+  Result<platform.ReadDir, IoError> readDirSync() => platform.readDirSync(path);
+
+  /// Returns an iterator over the entries within a directory.
+  /// Note: using this method results in the program no longer being able to compile to web.
+  Future<Result<platform.ReadDir, IoError>> readDir() => platform.readDir(path);
 
   /// Reads a symbolic link, returning the file that the link points to.
-  Result<Path, IoError> readLink() =>
-      platform.readLink(path) as Result<Path, IoError>;
+  Result<Path, IoError> readLinkSync() =>
+      platform.readLinkSync(path) as Result<Path, IoError>;
+
+  /// Reads a symbolic link, returning the file that the link points to.
+  Future<Result<Path, IoError>> readLink() =>
+      platform.readLink(path) as Future<Result<Path, IoError>>;
 
   /// Determines whether other is a prefix of this.
   bool startsWith(Path other) => path.startsWith(other.path);
@@ -229,7 +255,12 @@ extension type Path._(String path) implements Object {
 
   /// Returns the metadata for the symlink.
   /// Note: using this method means that the program can no longer compile for the web.
-  Result<platform.Metadata, IoError> symlinkMetadata() =>
+  Result<platform.Metadata, IoError> symlinkMetadataSync() =>
+      platform.symlinkMetadataSync(path);
+
+  /// Returns the metadata for the symlink.
+  /// Note: using this method means that the program can no longer compile for the web.
+  Future<Result<platform.Metadata, IoError>> symlinkMetadata() =>
       platform.symlinkMetadata(path);
 
 // to_path_buf: Will not implement, implementing a PathBuf does not make sense at the present (equality cannot hold for extension types and a potential PathBuf would likely be `StringBuffer` or `List<String>`).
