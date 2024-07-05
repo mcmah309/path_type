@@ -33,17 +33,26 @@ void main() {
     }
   });
 
-  test("metadata", () {
+  test("metadata", () async {
     if (Path.isIoSupported()) {
-      final metadata = Path("test/fixtures/file").metadata();
+      final metadata = await Path("test/fixtures/file").metadata();
       // Dev Note: uncommenting below will cause a compilation error when the target is web.
       // DateTime accessed = metadata.accessed;
-      // DateTime changed = metadata.changed;
-      // int mode = metadata.mode;
-      // FileSystemEntityType type = metadata.type;
     } else {
       expect(
-        () => Path("test/fixtures/file").metadata(),
+        () async => await Path("test/fixtures/file").metadata(),
+        throwsA(isA<UnsupportedError>()),
+      );
+    }
+  });
+
+  test("metadataSync", () {
+    if (Path.isIoSupported()) {
+      final metadata = Path("test/fixtures/file").metadataSync();
+      // Dev Note: uncommenting below will cause a compilation error when the target is web.
+    } else {
+      expect(
+        () => Path("test/fixtures/file").metadataSync(),
         throwsA(isA<UnsupportedError>()),
       );
     }
