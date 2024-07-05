@@ -78,8 +78,8 @@ Check if a path exists and get metadata:
 void main() {
   var path = Path('/foo/bar/baz.txt');
 
-  if (path.exists()) {
-    var metadata = path.metadata();
+  if (path.existsSync()) {
+    var metadata = path.metadataSync();
     print('File size: ${metadata.size}');
     print('Last modified: ${metadata.modified}');
   } else {

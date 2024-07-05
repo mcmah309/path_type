@@ -94,11 +94,9 @@ extension type Path._(String path) implements Object {
   bool endsWith(Path other) => path.endsWith(other.path);
 
   /// Determines whether file exists on disk.
-  /// Prefer faster [existsSync] over async [exists].
   bool existsSync() => platform.existsSync(path);
 
   /// Determines whether file exists on disk.
-  /// Prefer faster [existsSync] over async [exists].
   Future<bool> exists() => platform.exists(path);
 
   /// Extracts the extension (without the leading dot) of self.file_name, if possible.

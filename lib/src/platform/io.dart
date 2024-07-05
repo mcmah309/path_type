@@ -12,13 +12,11 @@ typedef ReadDir = List<io.FileSystemEntity>;
 typedef Metadata = io.FileStat;
 
 Future<Metadata> metadata(String path) => io.FileStat.stat(path);
-
 Metadata metadataSync(String path) => io.FileStat.statSync(path);
 
 Future<bool> exists(String path) async =>
     await io.FileSystemEntity.type(path, followLinks: true) !=
     io.FileSystemEntityType.notFound;
-
 bool existsSync(String path) =>
     io.FileSystemEntity.typeSync(path, followLinks: true) !=
     io.FileSystemEntityType.notFound;
@@ -45,7 +43,6 @@ Future<Result<ReadDir, IoError>> readDir(String path) async {
     return Err(IoErrorUnknown(path, e));
   }
 }
-
 Result<ReadDir, IoError> readDirSync(String path) {
   if (!isDirSync(path)) {
     return Err(IoErrorNotADirectory(path));
@@ -71,7 +68,6 @@ Future<Result<String, IoError>> readLink(String path) async {
     return Err(IoErrorUnknown(path, e));
   }
 }
-
 Result<String, IoError> readLinkSync(String path) {
   if (!isSymlinkSync(path)) {
     return Err(IoErrorNotALink(path));
@@ -94,7 +90,6 @@ Result<Metadata, IoError> symlinkMetadataSync(String path) {
     return Err(IoErrorUnknown(path, e));
   }
 }
-
 Future<Result<Metadata, IoError>> symlinkMetadata(String path) async {
   if (!await isSymlink(path)) {
     return Err(IoErrorNotALink(path));
