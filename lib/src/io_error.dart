@@ -10,11 +10,11 @@ sealed class IoError implements Exception {
 
   @override
   bool operator ==(Object other) {
-    return other.runtimeType == runtimeType;
+    return other.runtimeType == runtimeType && other is IoError && other.path == path;
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => path.hashCode ^ runtimeType.hashCode;
 }
 
 final class IoErrorNotADirectory extends IoError {
