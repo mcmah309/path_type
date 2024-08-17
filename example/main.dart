@@ -44,7 +44,6 @@ void main() {
     print(component); // Output: /, foo, bar, baz.txt
   }
 
-
   Path path1 = Path('/foo/bar');
   Path path2 = 'bar'.asPath();
   Path path3 = './baz.txt' as Path;

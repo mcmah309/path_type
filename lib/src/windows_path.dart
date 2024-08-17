@@ -229,11 +229,13 @@ extension type Path._(String string) implements Object {
 
   /// Returns an iterator over the entries within a directory.
   /// Note: using this method results in the program no longer being able to compile to web.
-  Result<platform.ReadDir, IoError> readDirSync() => platform.readDirSync(string);
+  Result<platform.ReadDir, IoError> readDirSync() =>
+      platform.readDirSync(string);
 
   /// Returns an iterator over the entries within a directory.
   /// Note: using this method results in the program no longer being able to compile to web.
-  Future<Result<platform.ReadDir, IoError>> readDir() => platform.readDir(string);
+  Future<Result<platform.ReadDir, IoError>> readDir() =>
+      platform.readDir(string);
 
   /// Reads a symbolic link, returning the file that the link points to.
   Result<Path, IoError> readLinkSync() =>
