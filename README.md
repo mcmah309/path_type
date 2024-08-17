@@ -4,7 +4,7 @@
 [![License: Apache 2.0](https://img.shields.io/github/license/mcmah309/path_type)](https://opensource.org/license/apache-2-0)
 [![Build Status](https://github.com/mcmah309/path_type/actions/workflows/ci.yml/badge.svg)](https://github.com/mcmah309/path_type/actions)
 
-`path_type` introduces a robust Path type, `Path`, supporting POSIX and Windows file systems. Instead of using `String`, use `Path` to handle file paths in a type-safe manner. `Path` can be used easily in place or with the [path](https://pub.dev/packages/path) package. `Path` is also zero runtime cost as it is implemented as an extension type of `String`.
+Path Type introduces a robust Path type, `Path`, supporting POSIX and Windows file systems. Instead of using `String`, use `Path` to handle file paths in a type-safe manner. `Path` can be used easily in place or with the [path](https://pub.dev/packages/path) package. `Path` is also zero runtime cost as it is implemented as an extension type of `String`.
 
 ## Usage
 import
