@@ -9,6 +9,10 @@ import 'utils.dart';
 
 const _pathSeparator = "\\";
 
+extension PathOnString on String {
+  Path asPath() => Path(this);
+}
+
 /// This type supports a number of operations for inspecting a path, including breaking the path into its components,
 /// extracting the file name, determining whether the path is absolute, and so on.
 extension type Path._(String string) implements Object {

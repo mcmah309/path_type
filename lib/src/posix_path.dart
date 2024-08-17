@@ -9,6 +9,10 @@ import 'utils.dart';
 
 const _pathSeparator = "/";
 
+extension PathOnString on String {
+  Path asPath() => Path(this);
+}
+
 /// This type supports a number of operations for inspecting a path, including breaking the path into its components,
 /// extracting the file name, determining whether the path is absolute, and so on.
 extension type Path._(String string) implements Object {
@@ -183,8 +187,7 @@ extension type Path._(String string) implements Object {
   Future<bool> isSymlink() => platform.isSymlink(string);
 
   /// Produces an iterator over the path’s components viewed as Strings
-  RIterator<String> iter() =>
-      RIterator.fromIterable(components().map((e) => e.toString()));
+  RIterator<String> iter() => RIterator.fromIterable(components().map((e) => e.toString()));
 
   /// Creates an Path with path adjoined to this.
   Path join(Path other) => Path(_posix.join(string, other.string));
@@ -232,8 +235,7 @@ extension type Path._(String string) implements Object {
   Future<Result<platform.ReadDir, IoError>> readDir() => platform.readDir(string);
 
   /// Reads a symbolic link, returning the file that the link points to.
-  Result<Path, IoError> readLinkSync() =>
-      platform.readLinkSync(string) as Result<Path, IoError>;
+  Result<Path, IoError> readLinkSync() => platform.readLinkSync(string) as Result<Path, IoError>;
 
   /// Reads a symbolic link, returning the file that the link points to.
   Future<Result<Path, IoError>> readLink() =>
@@ -253,13 +255,11 @@ extension type Path._(String string) implements Object {
 
   /// Returns the metadata for the symlink.
   /// Note: using this method means that the program can no longer compile for the web.
-  Result<platform.Metadata, IoError> symlinkMetadataSync() =>
-      platform.symlinkMetadataSync(string);
+  Result<platform.Metadata, IoError> symlinkMetadataSync() => platform.symlinkMetadataSync(string);
 
   /// Returns the metadata for the symlink.
   /// Note: using this method means that the program can no longer compile for the web.
-  Future<Result<platform.Metadata, IoError>> symlinkMetadata() =>
-      platform.symlinkMetadata(string);
+  Future<Result<platform.Metadata, IoError>> symlinkMetadata() => platform.symlinkMetadata(string);
 
 // to_path_buf: Will not implement, implementing a PathBuf does not make sense at the present (equality cannot hold for extension types and a potential PathBuf would likely be `StringBuffer` or `List<String>`).
 // to_str: Implemented by type
@@ -334,8 +334,7 @@ class Prefix extends Component {
   const Prefix(this.value);
 
   @override
-  bool operator ==(Object other) =>
-      other == value || (other is Prefix && other.value == value);
+  bool operator ==(Object other) => other == value || (other is Prefix && other.value == value);
 
   @override
   int get hashCode => value.hashCode;
@@ -388,8 +387,7 @@ class Normal extends Component {
   Normal(this.value);
 
   @override
-  bool operator ==(Object other) =>
-      other == value || (other is Normal && other.value == value);
+  bool operator ==(Object other) => other == value || (other is Normal && other.value == value);
 
   @override
   int get hashCode => value.hashCode;
