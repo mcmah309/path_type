@@ -19,6 +19,11 @@ Path path1 = Path('/foo/bar');
 Path path2 = 'bar'.asPath(); // or
 Path path3 = './baz.txt' as Path; // or
 ```
+convert back to string
+```dart
+Path path = Path('/foo/bar');
+String string = path.string;
+```
 
 
 Create a path and perform basic operations:
@@ -90,7 +95,7 @@ For more operations see the [documentation](https://pub.dev/documentation/path_t
 
 ## Comparison To The Path Package
 
-path_type has additional operations compared to the [path](https://pub.dev/packages/path) package, see the [documentation](https://pub.dev/documentation/path_type/latest/posix/Path-extension-type.html). From an ergonomic perspective usage differs as such:
+path_type has additional operations compared to the [path](https://pub.dev/packages/path) package, see the [documentation](https://pub.dev/documentation/path_type/latest/posix/Path-extension-type.html). Additionally, the path package only works with `String`, while `Path` can encapsulate the meaning through the type, providing clarity and preventing misuse. From an ergonomic perspective usage differs as such:
 
 path_type
 ```dart
