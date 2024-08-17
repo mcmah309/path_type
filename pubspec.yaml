@@ -1,6 +1,6 @@
 name: path_type
 description: A path type providing a type-safe and cross-platform path abstraction for managing and manipulating file paths, supporting both POSIX and Windows file systems.
-version: 0.4.0
+version: 1.0.0
 repository: https://github.com/mcmah309/path_type
 
 environment:

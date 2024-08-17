@@ -1,3 +1,9 @@
+## 1.0.0
+
+- Stabilize api
+- Add `asPath()` extension method to `String`
+- rename `Path`'s `path` field to `string`
+
 ## 0.4.0
 
 - Support `async` file methods
