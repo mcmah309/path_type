@@ -1,17 +1,10 @@
-# Path Type for Dart
+# Path Type
 [![Pub Version](https://img.shields.io/pub/v/path_type.svg)](https://pub.dev/packages/path_type)
 [![Dart Package Docs](https://img.shields.io/badge/documentation-pub.dev-blue.svg)](https://pub.dev/documentation/path_type/latest/)
 [![License: Apache 2.0](https://img.shields.io/github/license/mcmah309/path_type)](https://opensource.org/license/apache-2-0)
 [![Build Status](https://github.com/mcmah309/path_type/actions/workflows/ci.yml/badge.svg)](https://github.com/mcmah309/path_type/actions)
 
-`path_type` is a Dart package that introduces a robust Path type inspired by Rust's Path type. This package provides a way to work with file paths in a structured and type-safe manner, supporting POSIX and Windows file systems.
-
-## Features
-- Path Manipulation: Easily join, extend, and modify paths.
-- Component Extraction: Extract components like file name, extension, and parent directory.
-- File System Interaction: Query file system metadata, check existence, and more.
-- Cross-Platform Support: Separate implementations for POSIX and Windows paths, and runs on all platforms including web.
-- Zero Runtime Cost: Path is implemented as an extension type of String.
+`path_type` introduces a robust Path type, `Path`, supporting POSIX and Windows file systems. Instead of using `String`, use `Path` to handle file paths in a type-safe manner. `Path` can be used easily in place or with the [path](https://pub.dev/packages/path) package. `Path` is also zero runtime cost as it is implemented as an extension type of `String`.
 
 ## Usage
 import
@@ -21,7 +14,6 @@ import 'package:path_type/windows.dart'; // or
 import 'package:path_type/platform.dart'; // or, uses posix unless on windows
 ```
 
-### Basic Operations
 Create a path and perform basic operations:
 
 ```dart
@@ -43,7 +35,7 @@ void main() {
   print('New path with extension: $newPath'); // Output: /foo/bar/baz.md
 }
 ```
-### Extracting Components
+
 Get the components of a path:
 ```dart
 void main() {
@@ -55,7 +47,7 @@ void main() {
   }
 }
 ```
-### Ancestors
+
 Retrieve all ancestors of a path:
 ```dart
 void main() {
@@ -71,7 +63,6 @@ void main() {
   }
 }
 ```
-### File System Interaction
 Check if a path exists and get metadata:
 
 ```dart
@@ -87,3 +78,5 @@ void main() {
   }
 }
 ```
+
+For more operations see the [documentation](https://pub.dev/documentation/path_type/latest/posix/Path-extension-type.html)
