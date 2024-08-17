@@ -11,7 +11,7 @@ const _pathSeparator = "/";
 
 /// This type supports a number of operations for inspecting a path, including breaking the path into its components,
 /// extracting the file name, determining whether the path is absolute, and so on.
-extension type Path._(String path) implements Object {
+extension type Path._(String string) implements Object {
   /// Returns whether io operations are supported. If false, is currently running on the web.
   static bool isIoSupported() => platform.isIoSupported();
 
@@ -19,7 +19,7 @@ extension type Path._(String path) implements Object {
   static final RegExp _oneOrMoreSlashes = RegExp('$_pathSeparator+');
   static final p.Context _posix = p.Context(style: p.Style.posix);
 
-  Path(this.path);
+  Path(this.string);
 
   Iterable<Path> ancestors() sync* {
     yield this;
@@ -33,13 +33,13 @@ extension type Path._(String path) implements Object {
 // as_mut_os_str : will not be implemented
 // as_os_str : will not be implemented
 
-  Path canonicalize() => Path(_posix.canonicalize(path));
+  Path canonicalize() => Path(_posix.canonicalize(string));
 
   Iterable<Component> components() sync* {
     bool removeLast;
     // trailing slash does not matter
-    if (path.endsWith(_pathSeparator)) {
-      if (path.length == 1) {
+    if (string.endsWith(_pathSeparator)) {
+      if (string.length == 1) {
         yield RootDir();
         return;
       }
@@ -47,7 +47,7 @@ extension type Path._(String path) implements Object {
     } else {
       removeLast = false;
     }
-    final splits = path.split(_oneOrMoreSlashes);
+    final splits = string.split(_oneOrMoreSlashes);
     if (removeLast) {
       splits.removeLast();
     }
@@ -91,17 +91,17 @@ extension type Path._(String path) implements Object {
   String display() => toString();
 
   /// Determines whether other is a suffix of this.
-  bool endsWith(Path other) => path.endsWith(other.path);
+  bool endsWith(Path other) => string.endsWith(other.string);
 
   /// Determines whether file exists on disk.
-  bool existsSync() => platform.existsSync(path);
+  bool existsSync() => platform.existsSync(string);
 
   /// Determines whether file exists on disk.
-  Future<bool> exists() => platform.exists(path);
+  Future<bool> exists() => platform.exists(string);
 
   /// Extracts the extension (without the leading dot) of self.file_name, if possible.
   String extension() {
-    String extensionWithDot = _posix.extension(path);
+    String extensionWithDot = _posix.extension(string);
     if (extensionWithDot.isNotEmpty) {
       assert(extensionWithDot.startsWith("."));
       return extensionWithDot.replaceFirst(".", "");
@@ -110,7 +110,7 @@ extension type Path._(String path) implements Object {
   }
 
   /// Returns the final component of the Path, if there is one.
-  String fileName() => _posix.basename(path);
+  String fileName() => _posix.basename(string);
 
   /// Extracts the portion of the file name before the first "." -
   ///
@@ -120,7 +120,7 @@ extension type Path._(String path) implements Object {
   /// The entire file name if the file name begins with . and has no other .s within;
   /// The portion of the file name before the second . if the file name begins with .
   Option<String> filePrefix() {
-    final value = _posix.basename(path);
+    final value = _posix.basename(string);
     if (value.isEmpty) {
       return None;
     }
@@ -146,7 +146,7 @@ extension type Path._(String path) implements Object {
   /// The entire file name if the file name begins with . and has no other .s within;
   /// Otherwise, the portion of the file name before the final .
   Option<String> fileStem() {
-    final fileStem = _posix.basenameWithoutExtension(path);
+    final fileStem = _posix.basenameWithoutExtension(string);
     if (fileStem.isEmpty) {
       return None;
     }
@@ -154,48 +154,48 @@ extension type Path._(String path) implements Object {
   }
 
   /// Returns true if the Path has a root.
-  bool hasRoot() => _posix.rootPrefix(path) == _pathSeparator;
+  bool hasRoot() => _posix.rootPrefix(string) == _pathSeparator;
 
   // into_path_buf : will not be implemented
 
   /// Returns true if the Path is absolute, i.e., if it is independent of the current directory.
-  bool isAbsolute() => _posix.isAbsolute(path);
+  bool isAbsolute() => _posix.isAbsolute(string);
 
   /// Returns true if the path exists on disk and is pointing at a directory. Does not follow links.
-  bool isDirSync() => platform.isDirSync(path);
+  bool isDirSync() => platform.isDirSync(string);
 
   /// Returns true if the path exists on disk and is pointing at a directory. Does not follow links.
-  Future<bool> isDir() => platform.isDir(path);
+  Future<bool> isDir() => platform.isDir(string);
 
   /// Returns true if the path exists on disk and is pointing at a regular file. Does not follow links.
-  bool isFileSync() => platform.isFileSync(path);
+  bool isFileSync() => platform.isFileSync(string);
 
   /// Returns true if the path exists on disk and is pointing at a regular file. Does not follow links.
-  Future<bool> isFile() => platform.isFile(path);
+  Future<bool> isFile() => platform.isFile(string);
 
   /// Returns true if the Path is relative, i.e., not absolute.
-  bool isRelative() => _posix.isRelative(path);
+  bool isRelative() => _posix.isRelative(string);
 
   /// Returns true if the path exists on disk and is pointing at a symlink. Does not follow links.
-  bool isSymlinkSync() => platform.isSymlinkSync(path);
+  bool isSymlinkSync() => platform.isSymlinkSync(string);
 
   /// Returns true if the path exists on disk and is pointing at a symlink. Does not follow links.
-  Future<bool> isSymlink() => platform.isSymlink(path);
+  Future<bool> isSymlink() => platform.isSymlink(string);
 
   /// Produces an iterator over the path’s components viewed as Strings
   RIterator<String> iter() =>
       RIterator.fromIterable(components().map((e) => e.toString()));
 
   /// Creates an Path with path adjoined to this.
-  Path join(Path other) => Path(_posix.join(path, other.path));
+  Path join(Path other) => Path(_posix.join(string, other.string));
 
   /// Queries the file system to get information about a file, directory, etc.
   /// Note: using this method means that the program can no longer compile for the web.
-  platform.Metadata metadataSync() => platform.metadataSync(path);
+  platform.Metadata metadataSync() => platform.metadataSync(string);
 
   /// Queries the file system to get information about a file, directory, etc.
   /// Note: using this method means that the program can no longer compile for the web.
-  Future<platform.Metadata> metadata() => platform.metadata(path);
+  Future<platform.Metadata> metadata() => platform.metadata(string);
 
 // new : will not be implemented
 
@@ -225,41 +225,41 @@ extension type Path._(String path) implements Object {
 
   /// Returns an iterator over the entries within a directory.
   /// Note: using this method results in the program no longer being able to compile to web.
-  Result<platform.ReadDir, IoError> readDirSync() => platform.readDirSync(path);
+  Result<platform.ReadDir, IoError> readDirSync() => platform.readDirSync(string);
 
   /// Returns an iterator over the entries within a directory.
   /// Note: using this method results in the program no longer being able to compile to web.
-  Future<Result<platform.ReadDir, IoError>> readDir() => platform.readDir(path);
+  Future<Result<platform.ReadDir, IoError>> readDir() => platform.readDir(string);
 
   /// Reads a symbolic link, returning the file that the link points to.
   Result<Path, IoError> readLinkSync() =>
-      platform.readLinkSync(path) as Result<Path, IoError>;
+      platform.readLinkSync(string) as Result<Path, IoError>;
 
   /// Reads a symbolic link, returning the file that the link points to.
   Future<Result<Path, IoError>> readLink() =>
-      platform.readLink(path) as Future<Result<Path, IoError>>;
+      platform.readLink(string) as Future<Result<Path, IoError>>;
 
   /// Determines whether other is a prefix of this.
-  bool startsWith(Path other) => path.startsWith(other.path);
+  bool startsWith(Path other) => string.startsWith(other.string);
 
   /// Returns a path that, when joined onto base, yields this. Returns None if [prefix] is not a subpath of base.
   Option<Path> stripPrefix(Path prefix) {
     if (!startsWith(prefix)) {
       return None;
     }
-    final newPath = path.substring(prefix.path.length);
+    final newPath = string.substring(prefix.string.length);
     return Some(Path(newPath));
   }
 
   /// Returns the metadata for the symlink.
   /// Note: using this method means that the program can no longer compile for the web.
   Result<platform.Metadata, IoError> symlinkMetadataSync() =>
-      platform.symlinkMetadataSync(path);
+      platform.symlinkMetadataSync(string);
 
   /// Returns the metadata for the symlink.
   /// Note: using this method means that the program can no longer compile for the web.
   Future<Result<platform.Metadata, IoError>> symlinkMetadata() =>
-      platform.symlinkMetadata(path);
+      platform.symlinkMetadata(string);
 
 // to_path_buf: Will not implement, implementing a PathBuf does not make sense at the present (equality cannot hold for extension types and a potential PathBuf would likely be `StringBuffer` or `List<String>`).
 // to_str: Implemented by type
