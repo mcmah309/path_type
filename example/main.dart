@@ -43,4 +43,12 @@ void main() {
   for (var component in components) {
     print(component); // Output: /, foo, bar, baz.txt
   }
+
+
+  Path path1 = Path('/foo/bar');
+  Path path2 = 'bar'.asPath();
+  Path path3 = './baz.txt' as Path;
+
+  path = path1.join(path2).join(path3);
+  print(path); // Output: /foo/bar/bar/./baz.txt
 }
