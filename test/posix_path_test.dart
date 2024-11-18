@@ -1,6 +1,6 @@
 // ignore_for_file: pattern_never_matches_value_type
 
-import 'package:rust_core/option.dart';
+import 'package:rust/rust.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 import 'package:path_type/posix.dart';

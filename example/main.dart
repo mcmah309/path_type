@@ -1,5 +1,5 @@
 import 'package:path_type/posix.dart';
-import 'package:rust_core/option.dart';
+import 'package:rust/rust.dart';
 
 void main() {
   var path = Path('/foo/bar/baz.txt');

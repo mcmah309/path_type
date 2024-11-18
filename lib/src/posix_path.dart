@@ -1,7 +1,5 @@
 import 'package:path/path.dart' as p;
-import 'package:rust_core/iter.dart';
-import 'package:rust_core/option.dart';
-import 'package:rust_core/result.dart';
+import 'package:rust/rust.dart';
 
 import 'io_error.dart';
 import 'platform/platform.dart' as platform;
