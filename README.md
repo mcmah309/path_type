@@ -95,7 +95,11 @@ For more operations see the [documentation](https://pub.dev/documentation/path_t
 
 ## Comparison To The Path Package
 
-path_type has additional operations compared to the [path](https://pub.dev/packages/path) package, see the [documentation](https://pub.dev/documentation/path_type/latest/posix/Path-extension-type.html). Additionally, the path package only works with `String`, while `Path` can encapsulate the meaning through the type, providing clarity and preventing misuse. From an ergonomic perspective usage differs as such:
+path_type has additional operations compared to the [path](https://pub.dev/packages/path) package, see the [documentation](https://pub.dev/documentation/path_type/latest/posix/Path-extension-type.html). Additionally, the path package works with `String`, 
+while `Path` encapsulates the meaning through the type.
+Which provides clarity to developers and prevents misuse.
+
+#### Example Ergonomic Difference
 
 path_type
 ```dart
