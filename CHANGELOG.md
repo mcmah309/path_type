@@ -1,3 +1,7 @@
+## 1.0.1
+
+- Switch from rust_core to rust
+
 ## 1.0.0
 
 - Stabilize api
