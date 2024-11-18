@@ -113,8 +113,6 @@ Path path = path1.join(path2).join(path3);
 print(path); // Output: /foo/bar/bar/./baz.txt
 ```
 
-vs
-
 path
 ```dart
 import 'package:path/path.dart' as p;
