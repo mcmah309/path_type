@@ -25,10 +25,10 @@ extension type Path._(String string) implements Object {
 
   Iterable<Path> ancestors() sync* {
     yield this;
-    Path? current = parent().toNullable();
+    Path? current = parent().v;
     while (current != null) {
       yield current;
-      current = current.parent().toNullable();
+      current = current.parent().v;
     }
   }
 
@@ -185,8 +185,8 @@ extension type Path._(String string) implements Object {
   Future<bool> isSymlink() => platform.isSymlink(string);
 
   /// Produces an iterator over the path’s components viewed as Strings
-  RIterator<String> iter() =>
-      RIterator.fromIterable(components().map((e) => e.toString()));
+  Iter<String> iter() =>
+      Iter.fromIterable(components().map((e) => e.toString()));
 
   /// Creates an Path with path adjoined to this.
   Path join(Path other) => Path(_posix.join(string, other.string));
