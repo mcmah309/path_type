@@ -1,8 +1,8 @@
-import 'package:path_type/posix.dart';
+import 'package:path_type/path_type.dart';
 import 'package:rust/rust.dart';
 
 void main() {
-  var path = Path('/foo/bar/baz.txt');
+  var path = UnixPath('/foo/bar/baz.txt');
 
   print('File name: ${path.fileName()}'); // Output: baz.txt
   print('Extension: ${path.extension()}'); // Output: txt
@@ -16,7 +16,7 @@ void main() {
   var newPath = path.withExtension('md');
   print('New path with extension: $newPath'); // Output: /foo/bar/baz.md
 
-  path = Path('/foo/bar/baz.txt');
+  path = UnixPath('/foo/bar/baz.txt');
 
   if (path.existsSync()) {
     var metadata = path.metadataSync();
@@ -26,7 +26,7 @@ void main() {
     print('Path does not exist.');
   }
 
-  path = Path('/foo/bar/baz.txt');
+  path = UnixPath('/foo/bar/baz.txt');
 
   for (var ancestor in path.ancestors()) {
     print(ancestor);
@@ -37,16 +37,16 @@ void main() {
     // /
   }
 
-  path = Path('/foo/bar/baz.txt');
+  path = UnixPath('/foo/bar/baz.txt');
   var components = path.components().toList();
 
   for (var component in components) {
     print(component); // Output: /, foo, bar, baz.txt
   }
 
-  Path path1 = Path('/foo/bar');
-  Path path2 = 'bar'.asPath();
-  Path path3 = './baz.txt' as Path;
+  UnixPath path1 = UnixPath('/foo/bar');
+  UnixPath path2 = 'bar'.asUnixPath();
+  UnixPath path3 = './baz.txt' as UnixPath;
 
   path = path1.join(path2).join(path3);
   print(path); // Output: /foo/bar/bar/./baz.txt

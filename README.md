@@ -4,35 +4,28 @@
 [![License: Apache 2.0](https://img.shields.io/github/license/mcmah309/path_type)](https://opensource.org/license/apache-2-0)
 [![Build Status](https://github.com/mcmah309/path_type/actions/workflows/ci.yml/badge.svg)](https://github.com/mcmah309/path_type/actions)
 
-path_type introduces a robust path type, `Path`, supporting POSIX and Windows file systems. Instead of using `String`, use `Path` to handle file paths in a type-safe manner with methods that will never throw an exception. `Path` can be used easily in-place of or with the [path](https://pub.dev/packages/path) package. `Path` is also zero runtime cost as it is implemented as an extension type of `String`.
+path_type introduces a path types for working with file paths in a structured
+and type-safe manner, supporting Unix (POSIX) and Windows file systems. All Path types are extension
+types of string, so they are zero runtime cost.
 
-## Usage
-import
-```dart
-import 'package:path_type/posix.dart'; // or
-import 'package:path_type/windows.dart'; // or
-import 'package:path_type/platform.dart'; // or, uses posix unless on windows
-```
-declaration
-```dart
-Path path1 = Path('/foo/bar');
-Path path2 = 'bar'.asPath(); // or
-Path path3 = './baz.txt' as Path; // or
-```
-convert back to string
-```dart
-Path path = Path('/foo/bar');
-String string = path.string;
-```
+## Types
+
+[Path](https://pub.dev/documentation/path_type/latest/path_type/Path-extension-type.html) - A platform 
+dependent path type - uses `WindowPath` on windows and `UnixPath` on all other platforms.
+
+[UnixPath](https://pub.dev/documentation/path_type/latest/path_type/UnixPath-extension-type.html) - A Unix path type.
+
+[WindowsPath](https://pub.dev/documentation/path_type/latest/path_type/WindowsPath-extension-type.html) - A Windows path type.
 
 
+### Basic Operations
 Create a path and perform basic operations:
 
 ```dart
-import 'package:path_type/posix.dart';
+import 'package:rust/rust.dart';
 
 void main() {
-  var path = Path('/foo/bar/baz.txt');
+  var path = UnixPath('/foo/bar/baz.txt');
 
   print('File name: ${path.fileName()}'); // Output: baz.txt
   print('Extension: ${path.extension()}'); // Output: txt
@@ -47,11 +40,11 @@ void main() {
   print('New path with extension: $newPath'); // Output: /foo/bar/baz.md
 }
 ```
-
+### Extracting Components
 Get the components of a path:
 ```dart
 void main() {
-  var path = Path('/foo/bar/baz.txt');
+  var path = UnixPath('/foo/bar/baz.txt');
   var components = path.components().toList();
 
   for (var component in components) {
@@ -59,11 +52,11 @@ void main() {
   }
 }
 ```
-
+### Ancestors
 Retrieve all ancestors of a path:
 ```dart
 void main() {
-  var path = Path('/foo/bar/baz.txt');
+  var path = UnixPath('/foo/bar/baz.txt');
 
   for (var ancestor in path.ancestors()) {
     print(ancestor);
@@ -75,11 +68,12 @@ void main() {
   }
 }
 ```
+### File System Interaction
 Check if a path exists and get metadata:
 
 ```dart
 void main() {
-  var path = Path('/foo/bar/baz.txt');
+  var path = UnixPath('/foo/bar/baz.txt');
 
   if (path.existsSync()) {
     var metadata = path.metadataSync();
@@ -89,39 +83,4 @@ void main() {
     print('Path does not exist.');
   }
 }
-```
-
-For more operations see the [documentation](https://pub.dev/documentation/path_type/latest/posix/Path-extension-type.html)
-
-## Comparison To The Path Package
-
-path_type has additional operations compared to the [path](https://pub.dev/packages/path) package, see the [documentation](https://pub.dev/documentation/path_type/latest/posix/Path-extension-type.html). Additionally, the path package works with `String`, 
-while path_type uses `Path` to encapsulate the meaning through the type.
-Which provides clarity to developers and prevents misuse.
-
-#### Example Ergonomic Difference
-
-path_type
-```dart
-import 'package:path_type/posix.dart';
-
-Path path1 = Path('/foo/bar');
-Path path2 = Path('bar');
-Path path3 = Path('./baz.txt');
-
-Path path = path1.join(path2).join(path3);
-print(path); // Output: /foo/bar/bar/./baz.txt
-```
-
-path
-```dart
-import 'package:path/path.dart' as p;
-
-String path1 = '/foo/bar';
-String path2 = 'bar';
-String path3 = './baz.txt';
-
-p.Context posix = p.Context(style: p.Style.posix);
-var x = posix.joinAll([path1, path2, path3]);
-print(x); // Output: /foo/bar/bar/./baz.txt
 ```
