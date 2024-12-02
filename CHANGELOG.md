@@ -1,3 +1,9 @@
+## 2.0.0
+
+- Migrate to `rust` path type
+- Add `WindowsPath` and `UnixPath`
+- Remove different path type libraries
+
 ## 1.0.2
 
 - Remove deprecated members usage
