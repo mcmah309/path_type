@@ -1,5 +1,4 @@
 import 'package:path_type/path_type.dart';
-import 'package:rust/rust.dart';
 
 void main() {
   var path = UnixPath('/foo/bar/baz.txt');
