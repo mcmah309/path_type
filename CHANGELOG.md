@@ -1,3 +1,7 @@
+## 3.0.1
+
+- Doc update
+
 ## 3.0.0
 
 - Update rust version
