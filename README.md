@@ -22,7 +22,7 @@ dependent path type - uses `WindowPath` on windows and `UnixPath` on all other p
 Create a path and perform basic operations:
 
 ```dart
-import 'package:rust/rust.dart';
+import 'package:path_type/path_type.dart';
 
 void main() {
   var path = UnixPath('/foo/bar/baz.txt');
