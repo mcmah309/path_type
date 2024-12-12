@@ -32,8 +32,8 @@ void main() {
   print('Is absolute: ${path.isAbsolute()}'); // Output: true
 
   var parent = path.parent();
-  if (parent.isSome()) {
-    print('Parent: ${parent.unwrap()}'); // Output: /foo/bar
+  if (parent != null) {
+    print('Parent: $parent'); // Output: /foo/bar
   }
 
   var newPath = path.withExtension('md');
@@ -76,7 +76,7 @@ void main() {
   var path = UnixPath('/foo/bar/baz.txt');
 
   if (path.existsSync()) {
-    var metadata = path.metadataSync();
+    var metadata = path.metadataSync().unwrap();
     print('File size: ${metadata.size}');
     print('Last modified: ${metadata.modified}');
   } else {

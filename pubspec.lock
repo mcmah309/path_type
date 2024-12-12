@@ -213,10 +213,10 @@ packages:
     dependency: "direct main"
     description:
       name: rust
-      sha256: "6e35d1ebc19b62858d3c9d3238772a8ff7ce767c59dc637c9f9deae3b0d7634c"
+      sha256: "11b28552acbc017b872153febd5ffe18ceeb5548831f4d4390c1481e19acd60e"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0"
+    version: "3.0.0"
   shelf:
     dependency: transitive
     description:
@@ -394,4 +394,4 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.3.0 <4.0.0"
+  dart: ">=3.4.0 <4.0.0"

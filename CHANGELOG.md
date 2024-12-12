@@ -1,3 +1,7 @@
+## 3.0.0
+
+- Update rust version
+
 ## 2.0.0
 
 - Migrate to `rust` path type
